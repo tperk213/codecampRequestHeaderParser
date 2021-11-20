@@ -19,6 +19,21 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+app.get("/api/whoami", (req, res)=>{
+  //get ip from host
+  var hostIp = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  //console.log(ip);
+  var hostLanguage = req.headers['accept-language'];
+
+  var hostSoftware = req.headers['user-agent'];
+  console.log(typeof hostSoftware);
+  res.json({
+    ipaddress:hostIp,
+    language:hostLanguage,
+    software: hostSoftware
+  });
+});
+
 
 // your first API endpoint... 
 app.get("/api/hello", function (req, res) {
@@ -27,7 +42,10 @@ app.get("/api/hello", function (req, res) {
 
 
 
+
+var port = process.env.PORT || 3000;
+
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(port, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
